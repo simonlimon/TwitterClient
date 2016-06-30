@@ -10,24 +10,40 @@ import UIKit
 
 class User: NSObject {
     
-    var name: String?
-    var screenname: String?
-    var profilePictureUrl: NSURL?
-    var tagline: String?
+    var name: String!
+    var screenname: String!
+    var info: String!
+    var location: String!
+    var followersCount: Int!
+    var followingCount: Int!
     
+    var url: NSURL?
+    var backgroundImageUrl: NSURL?
+    var profilePictureUrl: NSURL?
+
     var dictionary = NSDictionary?()
     
     init(dictionary: NSDictionary) {
         self.dictionary = dictionary
         
-        name = dictionary["name"] as? String
-        screenname = dictionary["screenname"] as? String
+        name = dictionary["name"] as! String
+        info = dictionary["description"] as! String
+        location = dictionary["location"] as! String
+        screenname = dictionary["screen_name"] as! String
+        followersCount = dictionary["followers_count"] as! Int
+        followingCount = dictionary["friends_count"] as! Int
         
         if let urlString = (dictionary["profile_image_url_https"] as? String) {
             profilePictureUrl = NSURL(string: urlString)
         }
         
-        tagline = dictionary["description"] as? String
+        if let urlString = (dictionary["url"] as? String) {
+            url = NSURL(string: urlString)
+        }
+        
+        if let urlString = (dictionary["profile_background_image_url_https"] as? String) {
+            backgroundImageUrl = NSURL(string: urlString)
+        }
     }
     
     static var _currentUser: User?
