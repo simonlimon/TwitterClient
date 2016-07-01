@@ -86,7 +86,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     func tweet(text: String, success: () -> (), failure: (NSError) -> ()) {
-        GET("1.1/statuses/user_timeline.json?status=\(text)", parameters: nil, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
+        POST("1.1/statuses/update.json", parameters: ["status" : text], progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
             
             success()
             

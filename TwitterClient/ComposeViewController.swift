@@ -10,6 +10,9 @@ import UIKit
 
 class ComposeViewController: UIViewController {
 
+    @IBOutlet weak var tweetTextField: UITextView!
+    @IBOutlet weak var tweetButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,7 +24,19 @@ class ComposeViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func onTweet(sender: AnyObject) {
+        TwitterClient.sharedInstance.tweet(tweetTextField.text, success: { 
+            self.tweetTextField.text = ""
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }) { (error: NSError) in
+                print(error.localizedDescription)
+        }
+    }
 
+    @IBAction func onCancel(sender: AnyObject) {
+        self.tweetTextField.text = ""
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     /*
     // MARK: - Navigation
 

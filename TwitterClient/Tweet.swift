@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class Tweet: NSObject {
     var text: String?
@@ -104,5 +105,6 @@ class Tweet: NSObject {
         
         return tweets
     }
+    
 
 }

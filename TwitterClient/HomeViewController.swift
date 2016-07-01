@@ -8,6 +8,7 @@
 
 import UIKit
 import DGElasticPullToRefresh
+import KCFloatingActionButton
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -15,6 +16,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var tweets: [Tweet]!
     let client = TwitterClient.sharedInstance
+    
+    
+    let buttonLingos: [Lingo] = [Lingo.pirate, Lingo.yoda, Lingo.sith, Lingo.minion, Lingo.morse, Lingo.chef, Lingo.dothraki]
+    
+    let buttonIcons: [UIImage] = [UIImage(named: "pirate")!, UIImage(named: "yoda")!, UIImage(named: "sith")!, UIImage(named: "minion")!, UIImage(named: "morse")!, UIImage(named: "chef")!, UIImage(named: "dothraki")! ]
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +43,25 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
 
         fetchTweets()
+        
+        let frame = CGRectMake(self.view.frame.width - 60, self.view.frame.height - 110, 50, 50)
+        
+        let fab = KCFloatingActionButton(frame: frame)
+        
+        for i in 0..<buttonLingos.count {
+            fab.addItem(buttonLingos[i].str.capitalizedString, icon: buttonIcons[i], handler: { (item: KCFloatingActionButtonItem) in
+                Translator.translateTweetArrayTo(self.buttonLingos[i], tweets: self.tweets, success: {
+                    print("translated to: " + self.buttonLingos[i].str)
+                    self.tableView.reloadData()
+                }, failure: { (error: NSError) in
+                    print(error)
+                })
+                fab.close()
+            })
+        }
+        
+        self.view.addSubview(fab)
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -72,6 +99,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
+    @IBAction func onCompose(sender: AnyObject) {
+        self.performSegueWithIdentifier("ComposeSegue", sender: self)
+    }
+    
     deinit {
         tableView.dg_removePullToRefresh()
     }
@@ -90,7 +121,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             vc.viewDidLoad()
         }
     }
- 
 
 }
 

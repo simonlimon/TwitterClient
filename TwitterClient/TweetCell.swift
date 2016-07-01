@@ -96,6 +96,11 @@ class TweetCell: UITableViewCell {
         }
     }
     
+    @IBAction func onYoda(sender: AnyObject) {
+//        tweet?.translateToPirate({
+//            self.tweetLabel.text = self.tweet?.text
+//        })
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
