@@ -49,11 +49,9 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-My funTranslations API request limit just capped, so I'll have to wait a little bit before posting the video
+https://youtu.be/_yvL692rYoE
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+Viedeo created with Quicktime.
 
 ## Notes
 
