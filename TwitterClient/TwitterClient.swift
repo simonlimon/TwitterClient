@@ -59,8 +59,14 @@ class TwitterClient: BDBOAuth1SessionManager {
         NSNotificationCenter.defaultCenter().postNotificationName(TwitterClient.userDidLogoutNotification, object: nil)
     }
     
-    func homeTimeline(success: ([Tweet]) -> (), failure: (NSError) -> ()) {
-        GET("1.1/statuses/home_timeline.json", parameters: nil, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
+    func homeTimeline(maxID: Int?, success: ([Tweet]) -> (), failure: (NSError) -> ()) {
+        var parameters: [String : AnyObject] = [:]
+        
+        if let maxID = maxID {
+            parameters["max_id"] = maxID
+        }
+        
+        GET("1.1/statuses/home_timeline.json", parameters: parameters, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
             
             let tweetDicts = response as! [NSDictionary]
             let tweets = Tweet.tweetsFromArray(tweetDicts)
@@ -72,8 +78,15 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
     
-    func userTimeline(screenName: String, success: ([Tweet]) -> (), failure: (NSError) -> ()) {
-        GET("1.1/statuses/user_timeline.json?screen_name=\(screenName)", parameters: nil, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
+    func userTimeline(maxID: Int?, screenName: String, success: ([Tweet]) -> (), failure: (NSError) -> ()) {
+        
+        var parameters: [String : AnyObject] = ["screen_name" : screenName]
+        
+        if let maxID = maxID {
+            parameters["max_id"] = maxID
+        }
+        
+        GET("1.1/statuses/user_timeline.json", parameters: parameters , progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
             
             let tweetDicts = response as! [NSDictionary]
             let tweets = Tweet.tweetsFromArray(tweetDicts)

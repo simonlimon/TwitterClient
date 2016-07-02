@@ -72,7 +72,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func fetchTweets () {
         print("fetching")
-        TwitterClient.sharedInstance.userTimeline((user?.screenname)!, success: { (tweets: [Tweet]) in
+        TwitterClient.sharedInstance.userTimeline(nil, screenName: (user?.screenname)!, success: { (tweets: [Tweet]) in
             self.tweets = tweets
             self.tableView.reloadData()
             self.tableView.dg_stopLoading()

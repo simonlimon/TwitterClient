@@ -9,12 +9,13 @@
 import UIKit
 import DGElasticPullToRefresh
 import KCFloatingActionButton
+import SVPullToRefresh
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var tweets: [Tweet]!
+    var tweets: [Tweet]! = []
     let client = TwitterClient.sharedInstance
     
     
@@ -37,8 +38,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let loadingView = DGElasticPullToRefreshLoadingViewCircle()
         loadingView.tintColor = UIColor(red: 78/255.0, green: 221/255.0, blue: 200/255.0, alpha: 1.0)
         tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
-            self?.fetchTweets()
-            }, loadingView: loadingView)
+            self!.tweets = []
+            self!.fetchTweets()
+        }, loadingView: loadingView)
         tableView.dg_setPullToRefreshFillColor(UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0))
         tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
 
@@ -62,6 +64,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         self.view.addSubview(fab)
         
+        tableView.addInfiniteScrollingWithActionHandler { 
+            self.fetchTweets()
+        }
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -69,10 +75,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func fetchTweets () {
-        client.homeTimeline({ (tweets: [Tweet]) in
-            self.tweets = tweets
+        client.homeTimeline(tweets!.last?.id, success: { (tweets: [Tweet]) in
+            self.tweets.appendContentsOf(tweets)
             self.tableView.reloadData()
             self.tableView.dg_stopLoading()
+            self.tableView.infiniteScrollingView.stopAnimating()
         }) { (error: NSError) in
             print("error: " + error.localizedDescription)
             self.tableView.dg_stopLoading()

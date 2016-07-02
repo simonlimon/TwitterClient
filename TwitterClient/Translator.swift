@@ -11,7 +11,7 @@ import Alamofire
 
 class Translator: NSObject {
     
-    private static let separator = "œ"
+    private static let separator = "œ***œ!"
     
     private class func encode(text: [String]) -> String {
         var result = ""
@@ -36,12 +36,23 @@ class Translator: NSObject {
         }
         
         let encodedString = encode(strings)
+        print(encodedString)
         
         translateTo(lingo, text: encodedString, success: { (result: String) in
             strings = decode(result)
             
+            var skipped = 0
+            
+//            print(strings.count)
+//            print(tweets.count)
+            
             for i in 0..<tweets.count {
-                tweets[i].text = strings[i + 1]
+                let str: String = strings[i]
+                if str != "" {
+                    tweets[i - skipped].text = str.substringFromIndex(str.startIndex.advancedBy(1))
+                } else {
+                    skipped += 1
+                }
             }
             
             success()
@@ -58,8 +69,11 @@ class Translator: NSObject {
             switch response.result {
             case .Success:
                 let dict = response.result.value as! NSDictionary
-                let contents = dict["contents"] as! NSDictionary
-                success(contents["translated"] as! String)
+                if let contents = dict["contents"] as? NSDictionary {
+                    success(contents["translated"] as! String)
+                } else {
+                    print("API limit reached")
+                }
             case .Failure(let error):
                 failure(error)
             }
@@ -73,6 +87,7 @@ class Translator: NSObject {
         Alamofire.request(.GET, "https://yoda.p.mashape.com/yoda", parameters: ["sentence" : text], encoding: .URL, headers: headers).responseString { (response) in
             switch response.result {
             case .Success:
+                print(response.description)
                 success(response.description.substringFromIndex(response.description.startIndex.advancedBy(9)))
             case .Failure(let error):
                 failure(error)
