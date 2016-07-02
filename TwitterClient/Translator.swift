@@ -11,12 +11,12 @@ import Alamofire
 
 class Translator: NSObject {
     
-    private static let separator = "œ***œ!"
+    private static let separator = "(œ***œ)"
     
     private class func encode(text: [String]) -> String {
-        var result = ""
-        for str in text {
-            result += " " + separator + " " + str
+        var result = text[0]
+        for i in 1..<text.count {
+            result += " " + separator + " " + text[i]
         }
         return result
     }
@@ -43,10 +43,7 @@ class Translator: NSObject {
             
             var skipped = 0
             
-//            print(strings.count)
-//            print(tweets.count)
-            
-            for i in 0..<tweets.count {
+            for i in 0..<(strings.count < tweets.count ? strings.count : tweets.count){
                 let str: String = strings[i]
                 if str != "" {
                     tweets[i - skipped].text = str.substringFromIndex(str.startIndex.advancedBy(1))

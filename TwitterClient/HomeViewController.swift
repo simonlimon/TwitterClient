@@ -76,7 +76,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func fetchTweets () {
         client.homeTimeline(tweets!.last?.id, success: { (tweets: [Tweet]) in
-            self.tweets.appendContentsOf(tweets)
+            var copy = tweets
+            copy.removeFirst()
+            self.tweets.appendContentsOf(copy)
             self.tableView.reloadData()
             self.tableView.dg_stopLoading()
             self.tableView.infiniteScrollingView.stopAnimating()
