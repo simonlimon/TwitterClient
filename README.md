@@ -42,12 +42,14 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. What pther kind of API's appart from rest can we use?
+2. Are there any resources for finding public API's online
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
+
+My funTranslations API request limit just capped, so I'll have to wait a little bit before posting the video
 
 <img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
@@ -55,7 +57,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+I really enjoyed playing with external fun API's, I learned a lot about rest and web requests. Having a limited amount of requests was a fun challenge.
 
 ## Credits
 
